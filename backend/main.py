@@ -10,6 +10,7 @@ import json
 app = FastAPI()
 
 origins = [
+    "http://localhost:5173",
     "http://localhost:5001",  # React application's address
     "http://localhost:5000",
     "http://localhost:8000",  # React application's address
