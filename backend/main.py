@@ -1,10 +1,10 @@
-from fastapi import FastAPI, HTTPException
-from typing import List
-from pydantic import BaseModel
-import numpy as np
-import pandas as pd
-from datetime import datetime
 import pickle
+from datetime import datetime
+from typing import List
+
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 app = FastAPI()
 
