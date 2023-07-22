@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { CircularProgress, useTheme } from "@mui/material";
 import { ResponsiveBar } from "@nivo/bar";
 import { tokens } from "../theme";
@@ -20,7 +20,6 @@ const BarChartDailySize = ({ isDashboard = false }) => {
   }
 
   return (
-    console.log("data", data),
     <ResponsiveBar
       data={data}
       theme={{
