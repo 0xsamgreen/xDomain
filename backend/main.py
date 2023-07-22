@@ -1,9 +1,10 @@
 import pickle
 from datetime import datetime
-from typing import List
+from typing import Any, Dict, List
 import requests
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import numpy as np
 from collections import defaultdict
@@ -188,12 +189,8 @@ def opp_frequency():
     return data
 
 
-class TokenData(BaseModel):
-    paths: Dict[str, float]
-
-
-@app.get("/token_totals_paths", response_model=Dict[str, TokenData])
-def token_totals_paths():
+@app.get("/token_totals_paths", response_class=JSONResponse)
+async def token_totals_paths():
     opps_metadata_df = pd.read_csv("assets/opps_metadata-2023-3-19.csv").reset_index(
         drop=True
     )
@@ -208,7 +205,6 @@ def token_totals_paths():
     for path, metadata in unique_opps_profit_time.items():
         # Get the token that the path starts with
         path = convertStringToList(path)
-        # print(path)
 
         path_tokens_list = []
         for swap_id in path:
@@ -226,15 +222,14 @@ def token_totals_paths():
 
         # Track unique tokens
         if input_token not in token_profits.keys():
-            token_profits[input_token] = defaultdict(int)
+            token_profits[input_token] = {"token": input_token}
 
         for profit_cluster in metadata["profits"]:
+            if path_tokens_string not in token_profits[input_token].keys():
+                token_profits[input_token][path_tokens_string] = 0.0
             token_profits[input_token][path_tokens_string] += min(profit_cluster)
 
-    # Convert the defaultdict to a regular dictionary and map to response model
-    response = {
-        token: TokenData(paths=token_dict)
-        for token, token_dict in token_profits.items()
-    }
+    # Convert the defaultdict to a list of dictionaries
+    data = [token_dict for token_dict in token_profits.values()]
 
-    return response
+    return data
