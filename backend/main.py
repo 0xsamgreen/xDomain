@@ -125,7 +125,7 @@ class CurrentOppSeize(BaseModel):
 
 # returns mockOpportunities
 @app.get("/current_opp", response_model=List[CurrentOppSeize])
-def data_daily_opp():
+def current_opp():
     try:
         url = "https://odos.xyz/api/latest-arbs"
 
