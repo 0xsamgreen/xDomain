@@ -21,8 +21,8 @@ The Odos Cross-Domain Arbitrage Tracker (CAT) measures **real-time** cross-domai
 ## Frontend setup
 ```
 cd frontend
-npm install
-npm run dev
+npm install --legacy-peer-deps
+npm start
 ```
 
 ## Terminology
