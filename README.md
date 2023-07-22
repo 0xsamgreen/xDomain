@@ -4,11 +4,19 @@
 The Odos Cross-Domain Arbitrage Tracker (CAT) measures **real-time** cross-domain arbitrage opportunities between Uniswap V2 and its many clones on Ethereum and multiple L2s. The live version of the monitoring site is built and maintained by [Odos](https://www.odos.xyz) and is hosted at [https://odos.xyz/arbitrage](https://odos.xyz/arbitrage). This repo is for visualization of **historical** CAT data. It was built for ETHGlobal Paris 2023 hackathon.  
 
 ## Backend setup
-```
-cd backend
-pip install -r requirements.txt
-uvicorn main:app --reload
-```
+1. Setup the Python environment
+    ```
+    cd backend
+    pip install -r requirements.txt
+
+    ```
+
+2. Download the files in [this directory](https://drive.google.com/drive/folders/1TgLPiObFsgvXg2yxzi57aqiiujnX1h1U) and place them in `backend/assets`.
+
+3. Start the server
+    ```
+    uvicorn main:app --reload
+    ```
 
 ## Frontend setup
 ```
