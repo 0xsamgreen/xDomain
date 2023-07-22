@@ -2,38 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { CircularProgress, useTheme } from "@mui/material";
 import { ResponsiveBar } from "@nivo/bar";
 import { tokens } from "../theme";
-import config from '../config'
-import { mockBarDataSize as mockedData } from "../data/mockDataArbitrage";
+import config from '../config';
+import useFetchData from '../hooks/useFetchData';
 
 const BarChartDailySize = ({ isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const [data, setData] = useState(null);
+  const { data, loading, error } = useFetchData(`${config.BASE_URL}/data_daily_opp?epoch_start=1668658046`);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const url = `${config.BASE_URL}/data_daily_opp?epoch_start=1668658046`;
-      console.log(url);
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          console.error("Error fetching data: ", response.status, response.statusText);
-          return;
-        }
-        const jsonData = await response.json();
-        setData(jsonData);
-        console.log("jsonData", jsonData);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (!data) {
+  if (loading) {
     return <CircularProgress/>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
   }
 
   return (
