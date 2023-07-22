@@ -10,8 +10,10 @@ import json
 app = FastAPI()
 
 origins = [
-    "http://localhost:5173",  # React app's origin
-    # add other origins if needed
+    "http://localhost:5001",  # React application's address
+    "http://localhost:5000",
+    "http://localhost:8000",  # React application's address
+    "http://localhost:8100",  # React application's address
 ]
 
 app.add_middleware(

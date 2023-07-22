@@ -38,7 +38,7 @@ const BarChartDailySize = ({ isDashboard = false }) => {
     console.log("data set 2"),
     console.log(setData),
     <ResponsiveBar
-      data={mockedData}
+      data={data}
       theme={{
         // added
         axis: {
