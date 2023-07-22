@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useTheme } from "@mui/material";
+import { CircularProgress, useTheme } from "@mui/material";
 import { ResponsiveBar } from "@nivo/bar";
 import { tokens } from "../theme";
 import config from '../config'
@@ -23,7 +23,7 @@ const BarChartDailySize = ({ isDashboard = false }) => {
         }
         const jsonData = await response.json();
         setData(jsonData);
-        console.log(jsonData);
+        console.log("jsonData", jsonData);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -32,11 +32,12 @@ const BarChartDailySize = ({ isDashboard = false }) => {
     fetchData();
   }, []);
 
+  if (!data) {
+    return <CircularProgress/>;
+  }
+
   return (
-    console.log("data 2"),
-    console.log(data),
-    console.log("data set 2"),
-    console.log(setData),
+    console.log("data", data),
     <ResponsiveBar
       data={data}
       theme={{
@@ -150,7 +151,7 @@ const BarChartDailySize = ({ isDashboard = false }) => {
       ]}
       role="application"
     />
-  );
+   );
 };
 
 export default BarChartDailySize;

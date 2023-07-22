@@ -4,37 +4,30 @@ export const mockBarDataSize = [
   {
     date: "day1",
     amount : 100,
-    amountColor: "hsl(229, 70%, 50%)",
   },
   {
     date: "day2",
     amount : 10000,
-    amountColor: "hsl(229, 70%, 50%)",
   },
   {
     date: "day3",
     amount : 500,
-    amountColor: "hsl(229, 70%, 50%)",
   },
   {
     date: "day4",
     amount : 120,
-    amountColor: "hsl(229, 70%, 50%)",
   },
   {
     date: "day5",
     amount : 924,
-    amountColor: "hsl(229, 70%, 50%)",
   },
   {
     date: "day6",
     amount : 137,
-    amountColor: "hsl(229, 70%, 50%)",
   },
   {
     date: "day7",
     amount : 855,
-    amountColor: "hsl(229, 70%, 50%)",
   },
 ];
 

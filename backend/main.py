@@ -1,11 +1,11 @@
 import pickle
 from datetime import datetime
 from typing import List
+
+import requests
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import requests
-import json
 
 app = FastAPI()
 
