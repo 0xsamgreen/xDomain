@@ -266,3 +266,30 @@ async def token_paths():
             all_token_paths.append(path_tokens_string)
 
     return all_token_paths
+
+
+@app.get("/latency_histogram", response_class=JSONResponse)
+async def latency_histogram():
+    durations = []
+    for key, metadata in unique_opps_profit_time.items():
+        durations.append(metadata["opportunity_duration_sum"])
+
+    n_bins = 500
+    hist, bin_edges = np.histogram(durations, range=[0, 500], bins=n_bins)
+    print(hist)
+    print(bin_edges)
+    # preparing data in a required format
+    data = [
+        {"time": time, "amount": amount}
+        for amount, time in zip(hist.tolist(), bin_edges.tolist())
+    ]
+
+    return data
+
+
+@app.get("/total_opportunity", response_class=JSONResponse)
+async def total_opp():
+    min_profit_sum = 0
+    for key, metadata in unique_opps_profit_time.items():
+        min_profit_sum += unique_opps_profit_time[key]["min_profit_sum"]
+    return min_profit_sum
