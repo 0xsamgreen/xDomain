@@ -1,12 +1,14 @@
 import pickle
 from datetime import datetime
 from typing import List
-
 import requests
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import numpy as np
+from collections import defaultdict
+import pandas as pd
+from typing import Dict
 
 app = FastAPI()
 
@@ -184,3 +186,55 @@ def opp_frequency():
     ]
 
     return data
+
+
+class TokenData(BaseModel):
+    paths: Dict[str, float]
+
+
+@app.get("/token_totals_paths", response_model=Dict[str, TokenData])
+def token_totals_paths():
+    opps_metadata_df = pd.read_csv("assets/opps_metadata-2023-3-19.csv").reset_index(
+        drop=True
+    )
+
+    def convertStringToList(path):
+        return [int(float(k)) for k in path[1:-1].split(",")]
+
+    # Initialize the defaultdict with int as the default factory
+    token_profits = {}
+
+    # First assign all the keys to token_profits. Each key is a unique token
+    for path, metadata in unique_opps_profit_time.items():
+        # Get the token that the path starts with
+        path = convertStringToList(path)
+        # print(path)
+
+        path_tokens_list = []
+        for swap_id in path:
+            if swap_id == 0:
+                continue
+            token = opps_metadata_df[opps_metadata_df["swap_id"] == swap_id][
+                "token_in_symbol"
+            ].iloc[0]
+            path_tokens_list.append(token)
+
+        path_tokens_string = "_".join(path_tokens_list)
+        input_token = path_tokens_list[0]
+        # Needs to start and end with same token
+        path_tokens_string += f"_{input_token}"
+
+        # Track unique tokens
+        if input_token not in token_profits.keys():
+            token_profits[input_token] = defaultdict(int)
+
+        for profit_cluster in metadata["profits"]:
+            token_profits[input_token][path_tokens_string] += min(profit_cluster)
+
+    # Convert the defaultdict to a regular dictionary and map to response model
+    response = {
+        token: TokenData(paths=token_dict)
+        for token, token_dict in token_profits.items()
+    }
+
+    return response
