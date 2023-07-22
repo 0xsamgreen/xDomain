@@ -6,6 +6,7 @@ import requests
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+import numpy as np
 
 app = FastAPI()
 
@@ -154,3 +155,32 @@ def current_opp():
     except Exception as e:
         print(f"Exception occurred: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+class MockFrequencySeize(BaseModel):
+    frequency: int
+    amount: float
+
+
+# returns mockFrequency
+@app.get("/opp_frequency", response_model=List[MockFrequencySeize])
+def opp_frequency():
+    global unique_opps_profit_time
+    n_bins = 100
+    all_opp_cluster_min = []
+    for key, metadata in unique_opps_profit_time.items():
+        profits = metadata["profits"]
+        if len(profits) == 0:
+            continue
+        all_opp_cluster_min += min(profits)
+    hist, bin_edges = np.histogram(
+        all_opp_cluster_min, range=[0, max(all_opp_cluster_min)], bins=n_bins
+    )
+
+    # preparing data in a required format
+    data = [
+        {"frequency": frequency, "amount": amount}
+        for frequency, amount in zip(hist.tolist(), bin_edges.tolist())
+    ]
+
+    return data
