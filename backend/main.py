@@ -1,9 +1,10 @@
 import pickle
 from datetime import datetime
-from typing import List
+from typing import Any, Dict, List
 import requests
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import numpy as np
 from collections import defaultdict
@@ -28,6 +29,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+def convertStringToList(path):
+    return [int(float(k)) for k in path[1:-1].split(",")]
 
 
 def timestamp_to_date(timestamp):
@@ -62,6 +67,7 @@ async def load_dataframes():
     global unique_timestamps
     global block_rate
     global stats
+    global opps_metadata_df
 
     print("Loading variables from .pkl files...")
     with open("assets/opps.pkl", "rb") as f:
@@ -88,6 +94,10 @@ async def load_dataframes():
     with open("assets/stats.pkl", "rb") as f:
         stats = pickle.load(f)
     print("Finished loading variables from .pkl files...")
+
+    opps_metadata_df = pd.read_csv("assets/opps_metadata-2023-3-19.csv").reset_index(
+        drop=True
+    )
 
 
 @app.get("/")
@@ -188,18 +198,9 @@ def opp_frequency():
     return data
 
 
-class TokenData(BaseModel):
-    paths: Dict[str, float]
-
-
-@app.get("/token_totals_paths", response_model=Dict[str, TokenData])
-def token_totals_paths():
-    opps_metadata_df = pd.read_csv("assets/opps_metadata-2023-3-19.csv").reset_index(
-        drop=True
-    )
-
-    def convertStringToList(path):
-        return [int(float(k)) for k in path[1:-1].split(",")]
+@app.get("/token_totals_paths", response_class=JSONResponse)
+async def token_totals_paths():
+    global opps_metadata_df
 
     # Initialize the defaultdict with int as the default factory
     token_profits = {}
@@ -208,7 +209,6 @@ def token_totals_paths():
     for path, metadata in unique_opps_profit_time.items():
         # Get the token that the path starts with
         path = convertStringToList(path)
-        # print(path)
 
         path_tokens_list = []
         for swap_id in path:
@@ -226,15 +226,43 @@ def token_totals_paths():
 
         # Track unique tokens
         if input_token not in token_profits.keys():
-            token_profits[input_token] = defaultdict(int)
+            token_profits[input_token] = {"token": input_token}
 
         for profit_cluster in metadata["profits"]:
+            if path_tokens_string not in token_profits[input_token].keys():
+                token_profits[input_token][path_tokens_string] = 0.0
             token_profits[input_token][path_tokens_string] += min(profit_cluster)
 
-    # Convert the defaultdict to a regular dictionary and map to response model
-    response = {
-        token: TokenData(paths=token_dict)
-        for token, token_dict in token_profits.items()
-    }
+    # Convert the defaultdict to a list of dictionaries
+    data = [token_dict for token_dict in token_profits.values()]
 
-    return response
+    return data
+
+
+@app.get("/token_paths", response_class=JSONResponse)
+async def token_paths():
+    global opps_metadata_df
+    all_token_paths = []
+    # First assign all the keys to token_profits. Each key is a unique token
+    for path, metadata in unique_opps_profit_time.items():
+        # Get the token that the path starts with
+        path = convertStringToList(path)
+
+        path_tokens_list = []
+        for swap_id in path:
+            if swap_id == 0:
+                continue
+            token = opps_metadata_df[opps_metadata_df["swap_id"] == swap_id][
+                "token_in_symbol"
+            ].iloc[0]
+            path_tokens_list.append(token)
+
+        path_tokens_string = "_".join(path_tokens_list)
+        input_token = path_tokens_list[0]
+        # Needs to start and end with same token
+        path_tokens_string += f"_{input_token}"
+
+        if path_tokens_string not in all_token_paths:
+            all_token_paths.append(path_tokens_string)
+
+    return all_token_paths
