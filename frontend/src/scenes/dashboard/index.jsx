@@ -1,6 +1,5 @@
-import { Box, InputBase, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import { mockOpportunities } from "../../data/mockDataArbitrage";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
@@ -12,6 +11,7 @@ import StatBox from "../../components/StatBox";
 import BarChartFrequency from "../../components/BarChartFrequency";
 import BarChartTokenSize from "../../components/BarChartTokenSize";
 import BarChartTime from "../../components/BarChartTime";
+import TableOpportunities from "../../components/TableOpportunities";
 
 
 const Dashboard = () => {
@@ -171,34 +171,7 @@ const Dashboard = () => {
               Recent Opportunities
             </Typography>
           </Box>
-          {mockOpportunities.map((opportunity, i) => (
-            <Box
-              key={`${opportunity.token}-${i}`}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              borderBottom={`4px solid ${colors.primary[500]}`}
-              p="15px"
-            >
-              <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
-                  {opportunity.token}
-                </Typography>
-              </Box>
-              <Box
-                backgroundColor={colors.greenAccent[500]}
-                ml="center"
-                p="5px 10px"
-                borderRadius="4px"
-              >
-                ${opportunity.amount}
-              </Box>
-            </Box>
-          ))}
+            <TableOpportunities/>
         </Box>
 
         {/* ROW 3 */}
