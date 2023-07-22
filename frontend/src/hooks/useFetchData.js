@@ -10,8 +10,11 @@ const useFetchData = (url) => {
       try {
         const response = await fetch(url);
         if (!response.ok) {
-          throw new Error(`Error fetching data: ${response.status} ${response.statusText}`);
+          throw new Error(`Error fetching data ${url}: ${response.status} ${response.statusText}`);
         }
+        // else{
+        //     console.log(`Success fetching data ${url}: ${response.status} ${response.statusText}`);
+        // }
         const jsonData = await response.json();
         setData(jsonData);
       } catch (error) {
