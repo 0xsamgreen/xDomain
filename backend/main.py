@@ -285,3 +285,11 @@ async def latency_histogram():
     ]
 
     return data
+
+
+@app.get("/total_opportunity", response_class=JSONResponse)
+async def total_opp():
+    min_profit_sum = 0
+    for key, metadata in unique_opps_profit_time.items():
+        min_profit_sum += unique_opps_profit_time[key]["min_profit_sum"]
+    return min_profit_sum
