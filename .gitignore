@@ -167,3 +167,8 @@ dmypy.json
 test_ocean2.ipynb
 backend/opps_cleaned-2023-3-19.csv
 backend/opps_metadata-2023-3-19.csv
+frontend/.eslintrc.cjs
+.gitignore
+frontend/src/assets/react.svg
+.gitignore
+.gitignore
