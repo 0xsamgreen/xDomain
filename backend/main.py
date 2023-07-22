@@ -1,10 +1,11 @@
 import pickle
 from datetime import datetime
 from typing import List
-
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+import requests
+import json
 
 app = FastAPI()
 
@@ -79,11 +80,6 @@ class BarDataSeize(BaseModel):
     amount: float
 
 
-class PlotRequest(BaseModel):
-    from_date: str
-    to_date: str
-
-
 # returns mockBarDataSize
 @app.get("/data_daily_opp", response_model=List[BarDataSeize])
 def data_daily_opp(epoch_start: int):
@@ -104,6 +100,40 @@ def data_daily_opp(epoch_start: int):
             )
         print(f"daily_total_opp: {daily_total_opp}")
         return daily_total_opp
+    except Exception as e:
+        print(f"Exception occurred: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+class CurrentOppSeize(BaseModel):
+    token: str
+    amount: float
+
+
+# returns mockOpportunities
+@app.get("/current_opp", response_model=List[CurrentOppSeize])
+def data_daily_opp():
+    try:
+        url = "https://odos.xyz/api/latest-arbs"
+
+        response = requests.get(url)
+
+        # Checking the status code, 200 means the request was successful
+        if response.status_code == 200:
+            odos_data = response.json()
+            best_opportunities = odos_data["best_paths"]
+        else:
+            print("Error:", response.status_code)
+
+        # Extract the token name and amount from the best opportunities
+        results = []
+        for i in range(10):
+            opportunity_details = {}
+            path = best_opportunities[i]
+            opportunity_details["token"] = path["path"][0]["token_in_symbol"]
+            opportunity_details["amount"] = path["profitUSD"]
+            results.append(opportunity_details)
+        return results
     except Exception as e:
         print(f"Exception occurred: {e}")
         raise HTTPException(status_code=500, detail=str(e))
