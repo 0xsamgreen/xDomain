@@ -45,7 +45,7 @@ const TableOpportunities = ({ isDashboard = false }) => {
             p="5px 10px"
             borderRadius="4px"
           >
-            ${opportunity.amount}
+            ${(Number(opportunity.amount).toFixed(2))}
           </Box>
         </Box>
       ))}
