@@ -9,6 +9,19 @@ import json
 
 app = FastAPI()
 
+origins = [
+    "http://localhost:5173",  # React app's origin
+    # add other origins if needed
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 def timestamp_to_date(timestamp):
     # Convert the timestamp (seconds since the epoch) to a datetime object
