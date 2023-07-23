@@ -179,11 +179,13 @@ class MockFrequencySeize(BaseModel):
 async def opp_frequency(n_bins: int = 100):
     global unique_opps_profit_time
     all_opp_cluster_min = []
-    for key, metadata in unique_opps_profit_time.items():
+    for _, metadata in unique_opps_profit_time.items():
         profits = metadata["profits"]
         if len(profits) == 0:
             continue
-        all_opp_cluster_min += min(profits)
+        for profit_cluster in profits:
+            value = int(min(profit_cluster))
+            all_opp_cluster_min.append(value)
     hist, bin_edges = np.histogram(
         all_opp_cluster_min, range=[0, max(all_opp_cluster_min)], bins=n_bins
     )

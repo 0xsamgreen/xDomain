@@ -6,18 +6,18 @@ The Odos Cross-Domain Arbitrage Tracker (CAT) measures **real-time** cross-domai
 
 ## Backend setup
 1. Setup the Python environment
-    ```
-    cd backend
-    pip install -r requirements.txt
 
-    ```
+    ``` 
+    cd backend
+    pip install -r requirements.txt
+    ```
 
 2. Download the files in [this directory](https://drive.google.com/drive/folders/1TgLPiObFsgvXg2yxzi57aqiiujnX1h1U?usp=sharing) and place them in `backend/assets`.
 
 3. Start the server
-    ```
-    uvicorn main:app --reload
-    ```
+    ```
+    uvicorn main:app --reload
+    ```
 
 ## Frontend setup
 ```
