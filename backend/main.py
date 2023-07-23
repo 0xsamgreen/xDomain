@@ -176,9 +176,8 @@ class MockFrequencySeize(BaseModel):
 
 # returns mockFrequency
 @app.get("/opp_frequency", response_model=List[MockFrequencySeize])
-def opp_frequency():
+async def opp_frequency(n_bins: int = 100):
     global unique_opps_profit_time
-    n_bins = 100
     all_opp_cluster_min = []
     for key, metadata in unique_opps_profit_time.items():
         profits = metadata["profits"]
@@ -190,10 +189,10 @@ def opp_frequency():
     )
 
     # preparing data in a required format
-    data = [
-        {"frequency": frequency, "amount": amount}
-        for frequency, amount in zip(hist.tolist(), bin_edges.tolist())
-    ]
+    data = []
+    for frequency, amount in zip(hist.tolist(), bin_edges.tolist()):
+        if frequency != 0:
+            data.append({"frequency": frequency, "amount": amount})
 
     return data
 
