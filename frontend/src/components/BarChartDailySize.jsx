@@ -31,14 +31,6 @@ const BarChartDailySize = ({ isDashboard = false }) => {
 
   const numTicks = 7;
   const tickValuesY = Array.from({ length: numTicks }, (_, i) => minY + ((maxTickY - minY) / (numTicks - 1)) * i);
-  const tickValuesYRounded = tickValuesY.map(value => Math.round(value));
-  const formattedTickValuesY = tickValuesYRounded.map(value => value.toLocaleString('en-US'));
-
-
-  console.log('tickValuesY', tickValuesY)
-  console.log('formattedTickValuesY', formattedTickValuesY)
-
-
 
 
   return (

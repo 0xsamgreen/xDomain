@@ -18,6 +18,28 @@ const BarChartFrequency = ({ isDashboard = false }) => {
     return <div>Error: {error}</div>;
   }
 
+  function getEveryNth(data, n) {
+    return data.filter((_, i) => i % n === 0).map(d => d.amount);
+  }
+
+  const roundedValues = data.map(value => Math.round(value.amount));
+
+  const tickValues = getEveryNth(data, 1);
+  const formattedTickValues = tickValues.map(value => Math.round(value));
+
+  console.log('tickValues', tickValues)
+  console.log('formattedTickValues', formattedTickValues)
+  console.log('roundedValues', roundedValues)
+
+
+  const minY = 0;
+  const maxY = Math.floor(Math.max(...data.map(d => d.frequency)));
+  const maxTickY = Math.ceil(maxY * 0.95);
+
+  const numTicks = 7;
+  const tickValuesY = Array.from({ length: numTicks }, (_, i) => minY + ((maxTickY - minY) / (numTicks - 1)) * i);
+
+
   return (
     <ResponsiveBar
       data={data}
@@ -52,7 +74,7 @@ const BarChartFrequency = ({ isDashboard = false }) => {
       }}
       keys={["frequency"]}
       indexBy="amount"
-      margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+      margin={{ top: 50, right: 60, bottom: 50, left: 70 }}
       padding={0}
       valueScale={{ type: "linear" }}
       indexScale={{ type: "band", round: true }}
@@ -87,17 +109,19 @@ const BarChartFrequency = ({ isDashboard = false }) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "country", // changed
         legendPosition: "middle",
         legendOffset: 32,
       }}
+      gridYValues={tickValuesY}
       axisLeft={{
         tickSize: 5,
-        tickPadding: 5,
+        tickPadding: 2,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "food", // changed
+        legend: "Frequency",
         legendPosition: "middle",
-        legendOffset: -40,
+        legendOffset: -55,
+        tickValues: tickValuesY,
+        format: d => Math.round(d),
       }}
       enableLabel={false}
       labelSkipWidth={12}
@@ -106,30 +130,6 @@ const BarChartFrequency = ({ isDashboard = false }) => {
         from: "color",
         modifiers: [["darker", 1.6]],
       }}
-      legends={[
-        {
-          dataFrom: "keys",
-          anchor: "bottom-right",
-          direction: "column",
-          justify: false,
-          translateX: 120,
-          translateY: 0,
-          itemsSpacing: 2,
-          itemWidth: 100,
-          itemHeight: 20,
-          itemDirection: "left-to-right",
-          itemOpacity: 0.85,
-          symbolSize: 20,
-          effects: [
-            {
-              on: "hover",
-              style: {
-                itemOpacity: 1,
-              },
-            },
-          ],
-        },
-      ]}
       role="application"
     />
   );
