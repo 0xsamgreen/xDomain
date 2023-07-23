@@ -1,11 +1,31 @@
-import { useTheme } from "@mui/material";
+import { CircularProgress, useTheme } from "@mui/material";
 import { ResponsiveBar } from "@nivo/bar";
 import { tokens } from "../theme";
-import { mockBarTokenPathSize as data } from "../data/mockDataArbitrage";
+import useFetchData from '../hooks/useFetchData';
+import config from '../config';
 
 const BarChartTokenSize = ({ isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const { data, loading, error } = useFetchData(`${config.BASE_URL}/token_totals_paths`);
+  const { data: keys, loading: loadingKeys, error: errorKeys } = useFetchData(`${config.BASE_URL}/token_paths`);
+
+  console.log('Data:', data);
+  console.log('Keys:', keys);
+  console.log('Loading:', loading);
+  console.log('loadingKeys:', loadingKeys);
+  console.log('Error:', error);
+  console.log('errorKeys:', errorKeys);
+
+  if (loading || loadingKeys) {
+    return <CircularProgress />;
+  }
+
+  if (error || errorKeys) {
+    return <div>Error: {error}</div>;
+  }
+
 
   return (
     <ResponsiveBar
@@ -39,7 +59,7 @@ const BarChartTokenSize = ({ isDashboard = false }) => {
           },
         },
       }}
-      keys={["USDC_WETH_WETH_USDC", "USDC_WETH_BTC_WBTC_WETH_USDC", "USDC_DAI_BTC_WBTC_DAI_USDC", "WETH_AVAX_AVEX_WETH", "WETH_WBTC_DAI_DAI_WETH"]}
+      keys={keys}
       indexBy="token"
       margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
       padding={0.3}
