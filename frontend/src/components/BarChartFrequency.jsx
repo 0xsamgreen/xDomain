@@ -109,6 +109,7 @@ const BarChartFrequency = ({ isDashboard = false }) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
+        legend: "Opportunity size $",
         legendPosition: "middle",
         legendOffset: 32,
       }}
