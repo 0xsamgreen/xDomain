@@ -111,7 +111,7 @@ const BarChartTokenSize = ({ isDashboard = false }) => {
         tickRotation: 0,
         legend: "Total Opportunity $",
         legendPosition: "middle",
-        legendOffset: -40,
+        legendOffset: -55,
       }}
       enableLabel={false}
       labelSkipWidth={12}
