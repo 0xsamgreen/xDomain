@@ -126,7 +126,6 @@ const BarChartTime = ({ isDashboard = false }) => {
         modifiers: [["darker", 1.6]],
       }}
       role="application"
-      barAriaLabel={({data}) => `${data.time}: ${data.amount}`}
     />
   );
 };
