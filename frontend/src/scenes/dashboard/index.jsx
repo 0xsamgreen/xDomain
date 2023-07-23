@@ -1,13 +1,6 @@
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import TrafficIcon from "@mui/icons-material/Traffic";
-import Header from "../../components/Header";
 import BarChartDailySeize from "../../components/BarChartDailySize";
-import StatBox from "../../components/StatBox";
 import BarChartFrequency from "../../components/BarChartFrequency";
 import BarChartTokenSize from "../../components/BarChartTokenSize";
 import BarChartTime from "../../components/BarChartTime";
