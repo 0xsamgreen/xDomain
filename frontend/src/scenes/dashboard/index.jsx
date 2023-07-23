@@ -5,6 +5,7 @@ import BarChartFrequency from "../../components/BarChartFrequency";
 import BarChartTokenSize from "../../components/BarChartTokenSize";
 import BarChartTime from "../../components/BarChartTime";
 import TableOpportunities from "../../components/TableOpportunities";
+import NumberOpportunitySize from "../../components/NumberOpportunitySize";
 
 
 const Dashboard = () => {
@@ -112,22 +113,7 @@ const Dashboard = () => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Box>
-              <Typography
-                variant="h5"
-                fontWeight="600"
-                color={colors.grey[100]}
-              >
-                Opportunity Size
-              </Typography>
-              <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={colors.greenAccent[500]}
-              >
-                $59,342.32
-              </Typography>
-            </Box>
+          <NumberOpportunitySize isDashboard={true} />
           </Box>
           <Box height="250px" m="-20px 0 0 0">
             <BarChartDailySeize isDashboard={true} />
@@ -167,7 +153,7 @@ const Dashboard = () => {
             fontWeight="600"
             sx={{ padding: "30px 30px 0 30px" }}
           >
-            Opportunity size frequency
+            Opportunity Size Frequency
           </Typography>
           <Box height="250px" mt="-20px">
             <BarChartFrequency isDashboard={true} />
@@ -186,7 +172,7 @@ const Dashboard = () => {
             fontWeight="600"
             sx={{ padding: "30px 30px 0 30px" }}
           >
-            Opportunity amount per token
+            Opportunity Amount per Token
           </Typography>
           <Box height="250px" mt="-20px">
             <BarChartTokenSize isDashboard={true} />
@@ -204,7 +190,7 @@ const Dashboard = () => {
             fontWeight="600"
             sx={{ padding: "30px 30px 0 30px" }}
           >
-            Average duration per size
+            Average Duration per Size
           </Typography>
           <Box height="250px" mt="-20px">
             <BarChartTime isDashboard={true} />
@@ -212,7 +198,6 @@ const Dashboard = () => {
         </Box>
 
       </Box>
-
 
     </Box>
   );
