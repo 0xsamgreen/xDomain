@@ -23,7 +23,7 @@ const BarChartTime = ({ isDashboard = false }) => {
   }
 
 
-  const tickValues = getEveryNth(data, 10);
+  const tickValues = getEveryNth(data, 20);
 
   const minY = 0;
   const maxY = Math.floor(Math.max(...data.map(d => d.amount)));
