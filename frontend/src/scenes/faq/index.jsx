@@ -46,7 +46,7 @@ const FAQ = () => {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            https://github.com/0xsamgreen/xDomain
+          <a href="https://github.com/0xsamgreen/xDomain">https://github.com/0xsamgreen/xDomain</a>
           </Typography>
         </AccordionDetails>
       </Accordion>
