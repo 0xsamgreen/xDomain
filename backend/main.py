@@ -233,6 +233,15 @@ async def token_totals_paths():
                 token_profits[input_token][path_tokens_string] = 0.0
             token_profits[input_token][path_tokens_string] += min(profit_cluster)
 
+    # Sort the inner dictionary based on values
+    for key in token_profits.keys():
+        # Exclude the 'token' key
+        items = [(k, v) for k, v in token_profits[key].items() if k != "token"]
+        sorted_items = dict(sorted(items, key=lambda x: x[1], reverse=True))
+
+        # Add 'token' key back to the start of the sorted dictionary
+        token_profits[key] = {"token": token_profits[key]["token"], **sorted_items}
+
     # Convert the defaultdict to a list of dictionaries
     data = [token_dict for token_dict in token_profits.values()]
 
