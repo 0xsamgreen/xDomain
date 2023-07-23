@@ -11,13 +11,6 @@ const BarChartTokenSize = ({ isDashboard = false }) => {
   const { data, loading, error } = useFetchData(`${config.BASE_URL}/token_totals_paths`);
   const { data: keys, loading: loadingKeys, error: errorKeys } = useFetchData(`${config.BASE_URL}/token_paths`);
 
-  console.log('Data:', data);
-  console.log('Keys:', keys);
-  console.log('Loading:', loading);
-  console.log('loadingKeys:', loadingKeys);
-  console.log('Error:', error);
-  console.log('errorKeys:', errorKeys);
-
   if (loading || loadingKeys) {
     return <CircularProgress />;
   }

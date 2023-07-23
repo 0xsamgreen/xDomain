@@ -86,7 +86,7 @@ const BarChartDailySize = ({ isDashboard = false }) => {
       axisRight={null}
       axisBottom={{
         tickSize: 5,
-        tickPadding: 5,
+        tickPadding: 10,
         tickRotation: 0,
         legend: isDashboard ? undefined : "country", // changed
         legendPosition: "middle",
