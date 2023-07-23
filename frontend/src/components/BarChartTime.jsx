@@ -22,7 +22,8 @@ const BarChartTime = ({ isDashboard = false }) => {
     return data.filter((_, i) => i % n === 0).map(d => d.time);
   }
 
-  const tickValuesX = getEveryNth(data, 100);
+
+  const tickValues = getEveryNth(data, 10);
 
   const minY = 0;
   const maxY = Math.floor(Math.max(...data.map(d => d.amount)));
@@ -104,6 +105,7 @@ const BarChartTime = ({ isDashboard = false }) => {
         legend: "Average time (s)",
         legendPosition: "middle",
         legendOffset: 32,
+        tickValues: tickValues,
       }}
       gridYValues={tickValuesY}
       axisLeft={{
@@ -124,6 +126,7 @@ const BarChartTime = ({ isDashboard = false }) => {
         modifiers: [["darker", 1.6]],
       }}
       role="application"
+      barAriaLabel={({data}) => `${data.time}: ${data.amount}`}
     />
   );
 };
