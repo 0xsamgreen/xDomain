@@ -19,6 +19,28 @@ const BarChartTokenSize = ({ isDashboard = false }) => {
     return <div>Error: {error}</div>;
   }
 
+  const minY = 0;
+  let maxY = -Infinity;
+  data.forEach(obj => {
+    Object.values(obj).forEach(val => {
+      // check if the value is a number
+      if (typeof val === 'number' && val > maxY) {
+        maxY = val;
+      }
+    });
+  });
+  console.log("maxVal", maxY);
+  const maxTickY = Math.ceil(maxY * 0.95);
+
+  const numTicks = 7;
+  const tickValuesY = Array.from({ length: numTicks }, (_, i) => minY + ((maxTickY - minY) / (numTicks - 1)) * i);
+  const tickValuesYRounded = tickValuesY.map(value => Math.round(value));
+  const formattedTickValuesY = tickValuesYRounded.map(value => value.toLocaleString('en-US'));
+
+
+  console.log('tickValuesY', tickValuesY)
+  console.log('formattedTickValuesY', formattedTickValuesY)
+
 
   return (
     <ResponsiveBar
@@ -46,15 +68,10 @@ const BarChartTokenSize = ({ isDashboard = false }) => {
             },
           },
         },
-        legends: {
-          text: {
-            fill: colors.grey[100],
-          },
-        },
       }}
       keys={keys}
       indexBy="token"
-      margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+      margin={{ top: 50, right: 60, bottom: 50, left: 70 }}
       padding={0.3}
       valueScale={{ type: "linear" }}
       indexScale={{ type: "band", round: true }}
@@ -89,15 +106,15 @@ const BarChartTokenSize = ({ isDashboard = false }) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "country", // changed
+        legend: isDashboard ? undefined : "token", // changed
         legendPosition: "middle",
         legendOffset: 32,
       }}
       axisLeft={{
         tickSize: 5,
-        tickPadding: 5,
+        tickPadding: 2,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "food", // changed
+        legend: "Total Opportunity $",
         legendPosition: "middle",
         legendOffset: -40,
       }}
@@ -108,34 +125,7 @@ const BarChartTokenSize = ({ isDashboard = false }) => {
         from: "color",
         modifiers: [["darker", 1.6]],
       }}
-      legends={[
-        {
-          dataFrom: "keys",
-          anchor: "bottom-right",
-          direction: "column",
-          justify: false,
-          translateX: 120,
-          translateY: 0,
-          itemsSpacing: 2,
-          itemWidth: 100,
-          itemHeight: 20,
-          itemDirection: "left-to-right",
-          itemOpacity: 0.85,
-          symbolSize: 20,
-          effects: [
-            {
-              on: "hover",
-              style: {
-                itemOpacity: 1,
-              },
-            },
-          ],
-        },
-      ]}
       role="application"
-      barAriaLabel={function (e) {
-        return e.id + ": " + e.formattedValue + " in country: " + e.indexValue;
-      }}
     />
   );
 };
