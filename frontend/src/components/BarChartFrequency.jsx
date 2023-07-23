@@ -8,7 +8,7 @@ const BarChartFrequency = ({ isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const { data, loading, error } = useFetchData(`${config.BASE_URL}/opp_frequency`);
+  const { data, loading, error } = useFetchData(`${config.BASE_URL}/opp_frequency?n_bins=1000`);
 
   if (loading) {
     return <CircularProgress/>;
@@ -24,7 +24,7 @@ const BarChartFrequency = ({ isDashboard = false }) => {
 
   const roundedValues = data.map(value => Math.round(value.amount));
 
-  const tickValues = getEveryNth(data, 1);
+  const tickValues = getEveryNth(data, 4);
   const formattedTickValues = tickValues.map(value => Math.round(value));
 
   console.log('tickValues', tickValues)
@@ -112,6 +112,7 @@ const BarChartFrequency = ({ isDashboard = false }) => {
         legend: "Opportunity size $",
         legendPosition: "middle",
         legendOffset: 32,
+        tickValues: tickValues,
       }}
       gridYValues={tickValuesY}
       axisLeft={{
