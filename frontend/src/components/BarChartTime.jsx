@@ -1,11 +1,22 @@
-import { useTheme } from "@mui/material";
+import { useTheme, CircularProgress } from "@mui/material";
 import { ResponsiveBar } from "@nivo/bar";
 import { tokens } from "../theme";
-import { mockTime as data } from "../data/mockDataArbitrage";
+import config from '../config';
+import useFetchData from '../hooks/useFetchData';
 
 const BarChartTime = ({ isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const { data, loading, error } = useFetchData(`${config.BASE_URL}/latency_histogram`);
+
+  if (loading) {
+    return <CircularProgress/>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <ResponsiveBar
