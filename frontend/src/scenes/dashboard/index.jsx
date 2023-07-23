@@ -20,10 +20,6 @@ const Dashboard = () => {
 
   return (
     <Box m="20px">
-      {/* HEADER */}
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="Arbitrage Opportunities Dashboard" subtitle="Subtitle" />
-      </Box>
 
       {/* GRID & CHARTS */}
       <Box
@@ -32,7 +28,7 @@ const Dashboard = () => {
         gridAutoRows="140px"
         gap="20px"
       >
-        {/* ROW 1 */}
+        {/* ROW 1
         <Box
           gridColumn="span 3"
           backgroundColor={colors.primary[400]}
@@ -108,7 +104,7 @@ const Dashboard = () => {
               />
             }
           />
-        </Box>
+        </Box> */}
 
         {/* ROW 2 */}
         <Box
@@ -138,13 +134,6 @@ const Dashboard = () => {
               >
                 $59,342.32
               </Typography>
-            </Box>
-            <Box>
-              <IconButton>
-                <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                />
-              </IconButton>
             </Box>
           </Box>
           <Box height="250px" m="-20px 0 0 0">
